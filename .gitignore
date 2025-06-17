@@ -1,4 +1,6 @@
 tags
-cmd_tic_tac_toe
 *.o
 *.a
+bin
+lib
+build

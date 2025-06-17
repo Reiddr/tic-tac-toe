@@ -2,20 +2,29 @@ CC = gcc
 CFLAGS = -std=c89 -Wall -Wextra -I include -v
 AR = ar
 ARFLAGS = rcs
+BUILD_DIR = build
+BIN_DIR = bin
 
-all: main
+all: $(BIN_DIR)/main 
 
-main: main.o lib/libtermdraw.a
-	$(CC) $(CFLAGS) -o main main.o -Llib -ltermdraw
+$(BIN_DIR)/main: $(BUILD_DIR)/main.o lib/libtermdraw.a | $(BIN_DIR)
 
-main.o: src/main.c
-	$(CC) $(CFLAGS) -c src/main.c
+	$(CC) $(CFLAGS) -o $(BIN_DIR)/main $(BUILD_DIR)/main.o -Llib -ltermdraw
 
-lib/libtermdraw.a: term_draw.o
-	$(AR) $(ARFLAGS) lib/libtermdraw.a term_draw.o
+$(BUILD_DIR)/main.o: src/main.c | $(BUILD_DIR) 
+	$(CC) $(CFLAGS) -c src/main.c -o $(BUILD_DIR)/main.o
 
-term_draw.o: src/term_draw.c
-	$(CC) $(CFLAGS) -c src/term_draw.c
+lib/libtermdraw.a: $(BUILD_DIR)/term_draw.o
+	$(AR) $(ARFLAGS) lib/libtermdraw.a $(BUILD_DIR)/term_draw.o
+
+$(BUILD_DIR)/term_draw.o: src/term_draw.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c src/term_draw.c -o $(BUILD_DIR)/term_draw.o
 	
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
 clean:
-	rm -f main main.o lib/libtermdraw.a term_draw.o
+	rm -rf main lib/libtermdraw.a $(BUILD_DIR) $(BIN_DIR)

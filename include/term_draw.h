@@ -1,7 +1,11 @@
 #ifndef TERM_DRAW_H
 #define TERM_DRAW_H
 
-int td_putc(char c, char* text_colour, char* bg_colour);
-char* _print_cmd_create(char* fg, char* bg);
+#include <stdio.h>
+#include <ansi_codes.h>
+#include <types.h>
+
+char* td_putc(char c, char* fg, char* bg);
+uint16 _s_len_get(char* s);
 
 #endif /*TERM_DRAW_H*/

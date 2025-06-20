@@ -1,26 +1,26 @@
 #include <term_draw.h>
 
-static char* _print_cmd_create(char* fg, char* bg){
-	static char code[20];
-	sprintf(code, "%s%s;%s;%s%s", ESC, RESET_M, fg, bg, MODE);
-	return code;
-}
-
-/* get length of string */
-uint16 _s_len_get(char* s){
-	return sizeof(s)/sizeof(char) -1;
-}
-
-/* create a char terminal code with a foreground and background colour */
-char* td_putc(char c, char* fg, char* bg){
-	static char code[20];
-	sprintf(code, "%s%s;%s;%s%s%c%s", ESC, RESET_M, fg, bg, MODE, c, RESET);
-	return code;
+/* create a string with a foreground and background colour */
+int td_puts(char* s, char* fg, char* bg){
+	printf("%s%s%s", fg, bg, s);
+	return 0;
 }
 
 /* create a string with a foreground and background colour */
-char* td_puts(char* s, char* fg, char* bg){
-	static char code[50];
-	sprintf(code, "%s%s;%s;%s%s%c%s", ESC, RESET_M, fg, bg, MODE, s, RESET);
-	return code;
+int td_puts(char* s, char* fg, char* bg){
+	printf("%s%s%s", fg, bg, s);
+	return 0;
 }
+
+/* clear the screen */
+int td_clear_screen(void){
+	printf(CLEAR_SCREEN);
+	return 0;
+}
+
+/* clear the line the cursor is on */
+int td_clear_line(void){
+	printf(CLEAR_LINE);
+	return 0;
+}
+

@@ -14,18 +14,16 @@ int main(){
 		bitboard_print(white_pieces[i]); 
 	}
 */
-	printf("%i\n", _s_len_get("yes"));
-	printf("sizeof(\"yesn\"): %i\n", _s_len_get("yesn"));
-	printf("%i\n", sizeof(char));
-	printf("sizeof(string)%i\n", sizeof("12345678"));
-	printf("%i\n", sizeof(unsigned char));
+	printf("%lu\n", sizeof(char));
+	printf("sizeof(string)%lu\n", sizeof("12345678"));
+	printf("%lu\n", sizeof(unsigned char));
 	char c = 'b';
-	printf("%i\n", sizeof(c));
+	printf("%lu\n", sizeof(c));
 	char s[5] = "1234567";
-	printf("%i\n", sizeof(s));
-	printf("sizeof(*s): %i\n", sizeof(*s));
-	printf("sizeof(s[0]): %i\n", sizeof(s[0]));
-	printf("sizeof(s[1]): %i\n", sizeof(s[1]));
+	printf("%lu\n", sizeof(s));
+	printf("sizeof(*s): %lu\n", sizeof(*s));
+	printf("sizeof(s[0]): %lu\n", sizeof(s[0]));
+	printf("sizeof(s[1]): %lu\n", sizeof(s[1]));
 	printf("%s\n", td_putc('B', FG_RED, BG_BLUE));
 	return 0;
 }

@@ -6,6 +6,9 @@
 #include <types.h>
 
 char* td_putc(char c, char* fg, char* bg);
-uint16 _s_len_get(char* s);
+
+int td_clear_screen(void);
+
+int td_clear_line(void);
 
 #endif /*TERM_DRAW_H*/

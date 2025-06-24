@@ -5,7 +5,14 @@
 #include <ansi_codes.h>
 #include <types.h>
 
-char* td_putc(char c, char* fg, char* bg);
+int td_puts(char* s, char* fg, char* bg);
+
+int td_cursor_up(uint16 n);
+int td_cursor_down(uint16 n);
+int td_cursor_left(uint16 n);
+int td_cursor_right(uint16 n);
+
+int td_reset_colour(void);
 
 int td_clear_screen(void);
 

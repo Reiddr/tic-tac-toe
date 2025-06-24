@@ -5,25 +5,112 @@
 #include <ansi_codes.h>
 #include <term_draw.h>
 
-int main(){
-/*	uint64_t white_pieces[BB_T_COUNT]; 
-	bb_populate_pieces(white_pieces);
-	uint8_t i;
-	for(i=BB_T_PAWN; i<BB_T_COUNT; i++){
-		printf("%c\n", bb_get_piece_char(i));
-		bitboard_print(white_pieces[i]); 
+int print_board(char* b, uint8 rows, uint8 cols){
+	/* assume b is valid character array*/
+	uint8 r;
+	char row_s[12] = 	"   |   |   ";
+	char between_s[12] = 	"---|---|---";
+	printf("\n");
+	for(r = 0; r < rows; r++){
+		row_s[1] = b[r * cols + 0];
+		row_s[5] = b[r * cols + 1];
+		row_s[9] = b[r * cols + 2];
+		td_puts(row_s, FG_CYAN, BG_DEFAULT);
+		td_reset_colour();
+		printf("\n");
+		td_puts(between_s, FG_CYAN, BG_DEFAULT);
+		td_reset_colour();
+		printf("\n");
 	}
-*/
-	printf("%lu\n", sizeof(char));
-	printf("sizeof(string)%lu\n", sizeof("12345678"));
-	printf("%lu\n", sizeof(unsigned char));
-	char c = 'b';
-	printf("%lu\n", sizeof(c));
-	char s[5] = "1234567";
-	printf("%lu\n", sizeof(s));
-	printf("sizeof(*s): %lu\n", sizeof(*s));
-	printf("sizeof(s[0]): %lu\n", sizeof(s[0]));
-	printf("sizeof(s[1]): %lu\n", sizeof(s[1]));
-	printf("%s\n", td_putc('B', FG_RED, BG_BLUE));
+	td_cursor_up(1);
+	td_clear_line();
+	return 0;
+}
+
+int check_win(char* b){
+	/* assume 3x3 */
+	uint8 i;
+	for ( i = 0; i < 3; i++){
+		if ((b[i] == b[i+3]) && (b[i] == b[i+6])){
+			return 1; /* vertical wins */
+		}
+		if ((b[3*i] == b[3*i+1]) && (b[3*i] == b[3*i+2])){
+			return 1; /* horizontal wins */
+		}
+	}
+	if ((b[1] == b[5]) && (b[1]  == b[9])){
+		return 1; /* diagonal win 1 */
+	}
+	if ((b[3] == b[5]) && (b[3] == b[7])){
+		return 1; /* diagonal win 2 */
+	}
+	return 0;
+		
+		
+		
+}
+
+char get_input(){
+	int c, x;
+	c = getchar();
+	while ((x = getchar()) != '\n' && x != EOF); /* discard the rest of the line */
+	return c;
+}
+
+int input_valid(char* b, char* c_invalid, uint8 size, int c){
+	/* ascii 0 starts at 48 */
+	int i = c-48;
+	if(i < 0 || i > 8){
+		return 0; /* invalid input */
+	}
+	uint8 j;
+	for (j = 0; j < size; j++){
+		if ( b[i] == c_invalid[j] ){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+int make_move(char* b, int c, char piece){
+	if(input_valid(b, "XO", 2, c)){
+		b[c-48] = piece;
+	}
+	return 0;
+}
+
+int main(){
+	char board[10] = "012345678";
+	int c;
+	char player = 'X';
+	while(1){
+		print_board(board, 3, 3);
+		td_reset_colour();
+		printf("\n");	
+		printf("Player %c press a number: ", player);
+		c = get_input();
+		if (input_valid(board, "XO", 2, c)){
+			board[c-48] = player;
+			if(check_win(board)){
+				break;
+			}
+			if(player == 'X'){
+				player = 'O';
+			}
+			else{
+				player = 'X';
+			}
+		}
+		else {
+			printf(" invalid input\n");
+		}
+		make_move(board, c, 'X');
+		if (c == 'q'){
+			printf("Exiting!\n");
+			return 0;
+		}
+	}
+	print_board(board, 3, 3);
+	printf("Player %c wins!\n", player);
 	return 0;
 }

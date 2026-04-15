@@ -1,7 +1,6 @@
 #ifndef TERM_DRAW_H
 #define TERM_DRAW_H
 
-#include <stdio.h>
 #include <ansi_codes.h>
 #include <types.h>
 
@@ -17,5 +16,7 @@ int td_reset_colour(void);
 int td_clear_screen(void);
 
 int td_clear_line(void);
+
+int td_get_term_size(uint16* x, uint16* y);
 
 #endif /*TERM_DRAW_H*/

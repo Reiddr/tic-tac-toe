@@ -1,4 +1,9 @@
+#include <asm-generic/ioctls.h>
 #include <term_draw.h>
+#include <stdio.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
+
 
 /* place the cursor at x,y  0,0 is top left*/
 int td_cursor(uint16 x, uint16 y){
@@ -52,5 +57,16 @@ int td_clear_screen(void){
 int td_clear_line(void){
 	printf(CLEAR_LINE);
 	return 0;
+}
+
+int td_get_term_size(uint16* x, uint16* y){
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    *x = w.ws_col;
+    *y = w.ws_row;
+
+    printf("Lines: %d\n", *y);
+    printf("Columns: %d\n", *x);
+    return 0;
 }
 
